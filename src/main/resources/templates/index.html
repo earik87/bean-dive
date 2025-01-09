@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roasteries</title>
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script>
+        $(document).ready(function() {
+            $.ajax({
+                url: "/roasteries",
+                method: "GET",
+                success: function(data) {
+                    var roasteriesList = $('#roasteriesList');
+                    data.forEach(function(roastery) {
+                        roasteriesList.append('<li>' + roastery.name + ' - <a href="' + roastery.website + '">' + roastery.website + '</a> - ' + roastery.location + '</li>');
+                    });
+                },
+                error: function() {
+                    $('#roasteriesList').append('<li>Error loading roasteries</li>');
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+<h1>Roasteries</h1>
+<ul id="roasteriesList"></ul>
+</body>
+</html>
