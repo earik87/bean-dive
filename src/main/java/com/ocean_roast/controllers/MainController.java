@@ -1,4 +1,4 @@
-package com.ocean_roast;
+package com.ocean_roast.controllers;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
