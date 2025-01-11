@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beans List</title>
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script>
+        $(document).ready(function() {
+            $.ajax({
+                url: "/fetch-beans",
+                method: "GET",
+                success: function(data) {
+                    var beansTableBody = $('#beans-table-body');
+                    data.forEach(function(bean) {
+                        beansTableBody.append('<tr><td>' + bean.name + '</td><td>' + bean.price + '</td></tr>');
+                    });
+                },
+                error: function() {
+                    $('#beans-table-body').append('<tr><td colspan="2">Error loading beans</td></tr>');
+                }
+            });
+        });
+    </script>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+<h1>Beans List</h1>
+<table>
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Price</th>
+    </tr>
+    </thead>
+    <tbody id="beans-table-body">
+    </tbody>
+</table>
+</body>
+</html>

@@ -14,7 +14,6 @@ import java.util.List;
 public class RoasteryController {
 
     @GetMapping("/roasteries")
-
     public List<Roastery> getRoasteries() {
         log.info("getRoasteries() called");
         return RoasteryFactory.getRoasteries();
