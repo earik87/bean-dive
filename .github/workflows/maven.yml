@@ -25,4 +25,4 @@ jobs:
       with:
         distribution: 'temurin' # See 'Supported distributions' for available options
         java-version: '21'
-    - run: java OceanRoastApplication.java
+    - run: java src/main/java/com/ocean_roast/OceanRoastApplication.java
