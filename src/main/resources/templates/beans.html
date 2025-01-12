@@ -13,7 +13,15 @@
                 success: function(data) {
                     var beansTableBody = $('#beans-table-body');
                     data.forEach(function(bean) {
-                        beansTableBody.append('<tr><td>' + bean.name + '</td><td>' + bean.price + '</td></tr>');
+                        let linkHtml = '<a href="' + bean.link + '" target="_blank">' + bean.link + '</a>';
+                        beansTableBody.append(
+                            '<tr>' +
+                              '<td>' + bean.name + '</td>' +
+                              '<td>' + bean.price + '</td>' +
+                              '<td>' + bean.roasteryName + '</td>' +
+                              '<td>' + linkHtml + '</td>' +
+                            '</tr>'
+                        );
                     });
                 },
                 error: function() {
@@ -43,6 +51,8 @@
     <tr>
         <th>Name</th>
         <th>Price</th>
+        <th>Roastery Name</th>
+        <th>URL</th>
     </tr>
     </thead>
     <tbody id="beans-table-body">
