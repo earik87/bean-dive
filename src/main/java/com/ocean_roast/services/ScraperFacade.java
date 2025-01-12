@@ -17,6 +17,7 @@ public class ScraperFacade {
 
     private final HTMLCoffeeBeanScraper htmlCoffeeBeanScraper;
     private final JsonLDCoffeeBeanScraper jsonLDCoffeeBeanScraper;
+    private final InlineJsonCoffeeBeanScraper inlineJsonCoffeeBeanScraper;
 
     public List<Bean> fetchBeanPrices(List<Roastery> roasteries) {
         List<Bean> beans = new ArrayList<>();
@@ -31,7 +32,8 @@ public class ScraperFacade {
                     log.info("Successfully fetched bean prices with jsonLDCoffeeBeanScraper.");
                     break;
                 case INLINE_JSON:
-//                    beans.addAll(scrapeInlineJson(roastery));
+                    beans.addAll(inlineJsonCoffeeBeanScraper.fetchBeanPrices(roastery));
+                    log.info("Successfully fetched bean prices with inlineJsonCoffeeBeanScraper.");
                     break;
                 case HEADLESS:
 //                    beans.addAll(scrapeWithHeadlessBrowser(roastery));
