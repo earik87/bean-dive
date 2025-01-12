@@ -61,4 +61,23 @@
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>
+	<build>
+		<plugins>
+			<!-- Other plugins -->
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<version>3.4.1</version> <!-- or your desired version -->
+				<executions>
+					<execution>
+						<goals>
+							<!-- 'repackage' will create a fully executable JAR with Main-Class -->
+							<goal>repackage</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
 </project>
