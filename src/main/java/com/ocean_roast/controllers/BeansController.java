@@ -2,7 +2,7 @@ package com.ocean_roast.controllers;
 
 import com.ocean_roast.models.Bean;
 import com.ocean_roast.models.RoasteryFactory;
-import com.ocean_roast.services.TinCoffeeBeanScraper;
+import com.ocean_roast.services.ScraperFacade;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -16,13 +16,12 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 public class BeansController {
-    private final TinCoffeeBeanScraper coffeeBeanScraper;
+    private final ScraperFacade scraperFacade;
 
     @GetMapping("/fetch-beans")
     public List<Bean> getBeans() {
         log.info("getBeans() called");
-        List<Bean> beanPriceList = coffeeBeanScraper.fetchBeanPrices(RoasteryFactory.getRoasteries());
-        return beanPriceList;
+        return scraperFacade.fetchBeanPrices(RoasteryFactory.getRoasteries());
     }
 
     @Controller
