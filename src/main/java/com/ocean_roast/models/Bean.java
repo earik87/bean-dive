@@ -12,10 +12,10 @@ import org.springframework.stereotype.Component;
 public class Bean {
     private String roasteryName;
     private String name;
-    private String price;
+    private int price;
     private String link;
 
-    public Bean(String roasteryName, String name, String price, String link) {
+    public Bean(String roasteryName, String name, int price, String link) {
         this.roasteryName = roasteryName;
         this.name = name;
         this.price = price;
