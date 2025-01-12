@@ -24,11 +24,8 @@ public class BeansController {
         return scraperFacade.fetchBeanPrices(RoasteryFactory.getRoasteries());
     }
 
-    @Controller
-    public static class BeansPageController {
-        @GetMapping("/beans")
-        public ModelAndView beansPage() {
-            return new ModelAndView("beans");
-        }
+    @GetMapping("/beans")
+    public ModelAndView beansPage() {
+        return new ModelAndView("beans");
     }
 }

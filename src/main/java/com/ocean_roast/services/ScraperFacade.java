@@ -35,12 +35,6 @@ public class ScraperFacade {
                     beans.addAll(inlineJsonCoffeeBeanScraper.fetchBeanPrices(roastery));
                     log.info("Successfully fetched bean prices with inlineJsonCoffeeBeanScraper.");
                     break;
-                case HEADLESS:
-//                    beans.addAll(scrapeWithHeadlessBrowser(roastery));
-                    break;
-                case API:
-//                    beans.addAll(callApiDirectly(roastery));
-                    break;
                 default:
                     throw new IllegalArgumentException("Unsupported scrape type: " + roastery.getScrapeType());
             }
