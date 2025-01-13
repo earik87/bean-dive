@@ -3,54 +3,243 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Beans List</title>
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <title>Uncover New Roasts. Compare Prices. Brew Boldly.</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     <style>
+        /* Warm Coffee-Themed Background */
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #f3ebe1, #e0d7cd);
+            color: #4e342e;
+        }
+
+        /* Header Title */
+        h1 {
+            text-align: center;
+            font-size: 1.8em;
+            font-weight: 700;
+            color: #4e342e;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+        }
+
+        h1::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 3px;
+            background-color: #a1887f;
+            margin: 10px auto 0;
+            border-radius: 5px;
+        }
+
+        /* Stats Cards */
+        .stats-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 180px;
+        }
+
+        .stat-card h3 {
+            margin-bottom: 5px;
+            color: #6d4c41;
+        }
+
+        .stat-card p {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #8d6e63;
+        }
+
+        /* Softer Suggest Button */
+        .suggest-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            padding: 10px 20px;
+            background-color: #8d6e63;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .suggest-link:hover {
+            background-color: #6d4c41;
+        }
+
+        /* Filters and Search */
+        .filter-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .filter-container input, .filter-container select {
+            width: 220px;
+            padding: 10px;
+            margin: 5px;
+            border-radius: 5px;
+            border: 1px solid #bdbdbd;
+        }
+
+        /* Table Styling */
         table {
             width: 100%;
             border-collapse: collapse;
+            margin-top: 20px;
         }
+
         th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
+            padding: 12px;
+            border: 1px solid #d7ccc8;
+            text-align: center;
         }
+
         th {
-            background-color: #f2f2f2;
+            background-color: #efebe9;
+        }
+
+        tr:hover {
+            background-color: #f5f5f5;
         }
     </style>
 </head>
 <body>
 
-<h1>Beans List</h1>
+<!-- Page Title -->
+<h1>☕ Uncover New Roasts. Compare Prices. Brew Boldly.</h1>
+
+<!-- Stats Cards -->
+<div class="stats-container">
+    <div class="stat-card">
+        <h3>Lowest Price</h3>
+        <p id="min-price">₺0</p>
+    </div>
+    <div class="stat-card">
+        <h3>Average Price</h3>
+        <p id="avg-price">₺0</p>
+    </div>
+    <div class="stat-card">
+        <h3>Highest Price</h3>
+        <p id="max-price">₺0</p>
+    </div>
+</div>
+
+<!-- Suggest Button Above Filters -->
+<div style="text-align: center;">
+    <a href="https://forms.gle/L3zot9NFeVfw68v37" class="suggest-link" target="_blank">Suggest a New Roastery</a>
+</div>
+
+<!-- Filter & Search Inputs -->
+<div class="filter-container">
+    <input type="number" id="price-filter" placeholder="Filter by max price (₺)">
+    <input type="text" id="search-roastery" placeholder="Search by roastery">
+    <select id="sort-price">
+        <option value="none">Sort by Price</option>
+        <option value="asc">Lowest to Highest</option>
+        <option value="desc">Highest to Lowest</option>
+    </select>
+</div>
+
+<!-- Beans Table -->
 <table>
     <thead>
     <tr>
-        <th>Coffee Bean Name</th>
+        <th>Name</th>
+        <th>Roastery</th>
         <th>Price (₺)</th>
-        <th>Roastery Name</th>
-        <th>URL</th>
+        <th>Link</th>
     </tr>
     </thead>
     <tbody id="beans-table-body">
-    <tr><td colspan="4">Loading...</td></tr>
+    <tr><td colspan="4">Loading beans...</td></tr>
     </tbody>
 </table>
 
+<!-- JavaScript for Sorting and Filtering -->
 <script>
-    $(function() {
-        $.get("/beans", function(data) {
-            const rows = data.map(bean =>
-                `<tr>
-                    <td>${bean.name}</td>
-                    <td>${bean.price}</td>
-                    <td>${bean.roasteryName}</td>
-                    <td><a href="${bean.link}" target="_blank">${bean.link}</a></td>
-                </tr>`
-            ).join("");
+    $(document).ready(function () {
+        let originalData = [];
 
-            $("#beans-table-body").html(rows || "<tr><td colspan='4'>No beans available.</td></tr>");
-        }).fail(function() {
-            $("#beans-table-body").html("<tr><td colspan='4'>Error loading beans.</td></tr>");
+        $.ajax({
+            url: "/beans",
+            method: "GET",
+            success: function (data) {
+                originalData = data;
+                if (data.length === 0) {
+                    $('#beans-table-body').html('<tr><td colspan="4">No beans available.</td></tr>');
+                } else {
+                    updateStats(data);
+                    renderTable(data);
+                }
+            },
+            error: function () {
+                $('#beans-table-body').html('<tr><td colspan="4">Failed to load data. Please try again.</td></tr>');
+            }
+        });
+
+        function updateStats(data) {
+            const prices = data.map(bean => bean.price);
+            $('#avg-price').text(`₺${(prices.reduce((a, b) => a + b, 0) / prices.length).toFixed(2)}`);
+            $('#min-price').text(`₺${Math.min(...prices)}`);
+            $('#max-price').text(`₺${Math.max(...prices)}`);
+        }
+
+        function renderTable(data) {
+            const tableBody = $('#beans-table-body');
+            tableBody.empty();
+
+            if (data.length === 0) {
+                tableBody.append('<tr><td colspan="4">No beans available at this price range.</td></tr>');
+                return;
+            }
+
+            data.forEach(bean => {
+                tableBody.append(`
+                    <tr>
+                        <td>${bean.name}</td>
+                        <td>${bean.roasteryName}</td>
+                        <td>₺${bean.price}</td>
+                        <td><a href="${bean.link}" target="_blank">View</a></td>
+                    </tr>
+                `);
+            });
+        }
+
+        $('#price-filter, #search-roastery, #sort-price').on('input change', function () {
+            let filteredData = originalData;
+
+            const maxPrice = parseFloat($('#price-filter').val()) || Infinity;
+            const searchQuery = $('#search-roastery').val().toLowerCase();
+            const sortOrder = $('#sort-price').val();
+
+            filteredData = filteredData.filter(bean =>
+                bean.price <= maxPrice &&
+                bean.roasteryName.toLowerCase().includes(searchQuery)
+            );
+
+            if (sortOrder === 'asc') {
+                filteredData.sort((a, b) => a.price - b.price);
+            } else if (sortOrder === 'desc') {
+                filteredData.sort((a, b) => b.price - a.price);
+            }
+
+            renderTable(filteredData);
         });
     });
 </script>

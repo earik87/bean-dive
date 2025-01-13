@@ -6,6 +6,7 @@ import com.ocean_roast.models.RoasteryFactory;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,7 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 @Service
+@ConditionalOnProperty(name = "scheduler.enabled", havingValue = "true", matchIfMissing = true)
 public class ScraperScheduler {
     private final ScraperFacade scraperFacade;
     private final ObjectMapper objectMapper;
