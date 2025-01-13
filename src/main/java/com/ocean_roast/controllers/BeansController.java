@@ -1,8 +1,7 @@
 package com.ocean_roast.controllers;
 
 import com.ocean_roast.models.Bean;
-import com.ocean_roast.models.RoasteryFactory;
-import com.ocean_roast.services.ScraperFacade;
+import com.ocean_roast.services.ScrapedDataCache;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,16 +14,15 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 public class BeansController {
-    private final ScraperFacade scraperFacade;
-
-    @GetMapping("/fetch-beans")
-    public List<Bean> getBeans() {
-        log.info("getBeans() called");
-        return scraperFacade.fetchBeanPrices(RoasteryFactory.getRoasteries());
-    }
+    private final ScrapedDataCache scrapedDataCache;
 
     @GetMapping("/beans")
-    public ModelAndView beansPage() {
+    public List<Bean> getBeans() {
+        return scrapedDataCache.getCachedBeans();
+    }
+
+    @GetMapping("/")
+    public ModelAndView homePage() {
         return new ModelAndView("beans");
     }
 }

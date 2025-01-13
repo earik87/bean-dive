@@ -4,32 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Beans List</title>
-    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-    <script>
-        $(document).ready(function() {
-            $.ajax({
-                url: "/fetch-beans",
-                method: "GET",
-                success: function(data) {
-                    var beansTableBody = $('#beans-table-body');
-                    data.forEach(function(bean) {
-                        let linkHtml = '<a href="' + bean.link + '" target="_blank">' + bean.link + '</a>';
-                        beansTableBody.append(
-                            '<tr>' +
-                              '<td>' + bean.name + '</td>' +
-                              '<td>' + bean.price + '</td>' +
-                              '<td>' + bean.roasteryName + '</td>' +
-                              '<td>' + linkHtml + '</td>' +
-                            '</tr>'
-                        );
-                    });
-                },
-                error: function() {
-                    $('#beans-table-body').append('<tr><td colspan="2">Error loading beans</td></tr>');
-                }
-            });
-        });
-    </script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <style>
         table {
             width: 100%;
@@ -45,18 +20,40 @@
     </style>
 </head>
 <body>
+
 <h1>Beans List</h1>
 <table>
     <thead>
     <tr>
         <th>Coffee Bean Name</th>
-        <th>Price(₺)</th>
+        <th>Price (₺)</th>
         <th>Roastery Name</th>
         <th>URL</th>
     </tr>
     </thead>
     <tbody id="beans-table-body">
+    <tr><td colspan="4">Loading...</td></tr>
     </tbody>
 </table>
+
+<script>
+    $(function() {
+        $.get("/beans", function(data) {
+            const rows = data.map(bean =>
+                `<tr>
+                    <td>${bean.name}</td>
+                    <td>${bean.price}</td>
+                    <td>${bean.roasteryName}</td>
+                    <td><a href="${bean.link}" target="_blank">${bean.link}</a></td>
+                </tr>`
+            ).join("");
+
+            $("#beans-table-body").html(rows || "<tr><td colspan='4'>No beans available.</td></tr>");
+        }).fail(function() {
+            $("#beans-table-body").html("<tr><td colspan='4'>Error loading beans.</td></tr>");
+        });
+    });
+</script>
+
 </body>
 </html>
