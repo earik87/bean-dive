@@ -10,9 +10,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -44,20 +41,8 @@ public class ScraperScheduler {
         // Scrape data
         List<Bean> scrapedData = scraperFacade.fetchBeanPrices(RoasteryFactory.getRoasteries());
 
-        // Define file path
-        String fileName = "coffee_data_" + timestamp + ".json";
-        String filePath = Paths.get(DATA_DIR, fileName).toString();
-
-        try {
-            // Save scraped data to file
-            objectMapper.writerWithDefaultPrettyPrinter().writeValue(new File(filePath), scrapedData);
-            log.info("Data saved to: {}", filePath);
-
-            // ✅ Update cache after saving
-            scrapedDataCache.updateCache(scrapedData);
-            log.info("Cache updated with latest scraped data.");
-        } catch (IOException e) {
-            log.error("Failed to save scraped data: {}", e.getMessage());
-        }
+        // ✅ Update cache after saving
+        scrapedDataCache.updateCache(scrapedData);
+        log.info("Cache updated with latest scraped data.");
     }
 }
