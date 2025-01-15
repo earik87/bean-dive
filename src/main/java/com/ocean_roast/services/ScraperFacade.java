@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -18,6 +19,8 @@ public class ScraperFacade {
     private final HTMLCoffeeBeanScraper htmlCoffeeBeanScraper;
     private final JsonLDCoffeeBeanScraper jsonLDCoffeeBeanScraper;
     private final InlineJsonCoffeeBeanScraper inlineJsonCoffeeBeanScraper;
+    private final PartialClassMatchCoffeeBeanScraper partialClassMatchCoffeeBeanScraper;
+    private final ProductCardCoffeeBeanScraper productCardCoffeeBeanScraper;
 
     public List<Bean> fetchBeanPrices(List<Roastery> roasteries) {
         List<Bean> beans = new ArrayList<>();
@@ -25,21 +28,32 @@ public class ScraperFacade {
             switch (roastery.getScrapeType()) {
                 case HTML:
                     beans.addAll(htmlCoffeeBeanScraper.fetchBeanPrices(roastery));
-                    log.info("Successfully fetched bean prices with htmlCoffeeBeanScraper.");
+                    log.info("Successfully fetched bean prices from: " + roastery.getName());
                     break;
                 case JSON_LD:
                     beans.addAll(jsonLDCoffeeBeanScraper.fetchBeanPrices(roastery));
-                    log.info("Successfully fetched bean prices with jsonLDCoffeeBeanScraper.");
+                    log.info("Successfully fetched bean prices from: " + roastery.getName());
                     break;
                 case INLINE_JSON:
                     beans.addAll(inlineJsonCoffeeBeanScraper.fetchBeanPrices(roastery));
-                    log.info("Successfully fetched bean prices with inlineJsonCoffeeBeanScraper.");
+                    log.info("Successfully fetched bean prices from: " + roastery.getName());
+                    break;
+                case PARTIAL_CLASS_MATCH:
+                    beans.addAll(partialClassMatchCoffeeBeanScraper.fetchBeanPrices(roastery));
+                    log.info("Successfully fetched bean prices from: " + roastery.getName());
+                    break;
+                case PRODUCT_CARD:
+                    beans.addAll(productCardCoffeeBeanScraper.fetchBeanPrices(roastery));
+                    log.info("Successfully fetched bean prices from: " + roastery.getName());
                     break;
                 default:
                     throw new IllegalArgumentException("Unsupported scrape type: " + roastery.getScrapeType());
             }
         }
-        beans.sort(Comparator.comparingInt(Bean::getPrice));
-        return beans;
+
+        return beans.stream()
+                .filter(bean -> bean.getPrice() >= 100)  // Filter out beans with price < 100
+                .sorted(Comparator.comparingInt(Bean::getPrice))  // Sort by price (ascending)
+                .collect(Collectors.toList());
     }
 }
