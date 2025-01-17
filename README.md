@@ -11,15 +11,17 @@ Frontend
 
 ## Running
 
-### Local Development (testing UI)
-- set spring.profiles.active to local in application.properties.
+### Local Development 
+#### Testing UI
+- set spring.profiles.active to test in application.properties.
 - mvn clean install
 - run the application via intellij idea.
-- open http://localhost:8080.
+- open http://localhost:8080
 
-### QA Development (testing UI and scraper)
-- set spring.profiles.active to qa in application.properties.
+#### Testing UI and Scraper
+- set spring.profiles.active to prod in application.properties.
+- maybe select only few roasteries from roasterFactory file.
 - mvn clean install
 - docker build -t bean-app .
-- docker run -d --name bean-app -p 8080:8080 -v $(pwd)/data:/data -e SPRING_PROFILES_ACTIVE=qa bean-app
-- open http://localhost:8080.
+- docker run -d --name bean-app -p 8080:8080 bean-app
+- open http://localhost:8080
