@@ -1,5 +1,8 @@
-package com.ocean_roast.models;
+package com.ocean_roast.services;
 
+
+import com.ocean_roast.models.Roastery;
+import com.ocean_roast.models.ScrapeType;
 
 import java.util.Arrays;
 import java.util.List;

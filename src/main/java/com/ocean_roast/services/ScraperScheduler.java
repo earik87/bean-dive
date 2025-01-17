@@ -2,7 +2,6 @@ package com.ocean_roast.services;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ocean_roast.models.Bean;
-import com.ocean_roast.models.RoasteryFactory;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
