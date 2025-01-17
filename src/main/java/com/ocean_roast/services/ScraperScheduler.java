@@ -1,6 +1,5 @@
 package com.ocean_roast.services;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ocean_roast.models.Bean;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
@@ -19,10 +18,7 @@ import java.util.List;
 @ConditionalOnProperty(name = "scheduler.enabled", havingValue = "true", matchIfMissing = true)
 public class ScraperScheduler {
     private final ScraperFacade scraperFacade;
-    private final ObjectMapper objectMapper;
     private final ScrapedDataCache scrapedDataCache;
-
-    private static final String DATA_DIR = "/data";
 
     // ✅ Runs once immediately after startup
     @PostConstruct
