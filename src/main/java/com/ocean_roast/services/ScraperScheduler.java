@@ -19,8 +19,8 @@ public class ScraperScheduler {
     private final ScraperFacade scraperFacade;
     private final ScrapedDataCache scrapedDataCache;
 
-    // Runs once, 10 seconds after startup
-    @Scheduled(initialDelay = 10000, fixedDelay = Long.MAX_VALUE)
+    // Runs once, 2 seconds after startup
+    @Scheduled(initialDelay = 2000, fixedDelay = Long.MAX_VALUE)
     public void initialScrape() {
         log.info("Running initial data scrape 10 seconds after startup.");
         scrapeData();
