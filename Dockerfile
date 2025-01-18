@@ -11,4 +11,4 @@ COPY target/ocean-roast-0.0.1-SNAPSHOT.jar app.jar
 EXPOSE 8080
 
 # Run the JAR
-ENTRYPOINT ["java", "-jar", "/app/app.jar"]
+ENTRYPOINT ["java", "-Xms256m", "-Xmx512m", "-jar", "/app/app.jar"]
