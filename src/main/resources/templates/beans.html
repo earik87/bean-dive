@@ -1,195 +1,68 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Uncover New Roasts. Compare Prices. Brew Boldly.</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-    <style>
-        /* Warm Coffee-Themed Background */
-        body {
-            font-family: 'Poppins', sans-serif;
-            margin: 0;
-            padding: 20px;
-            background: linear-gradient(135deg, #f3ebe1, #e0d7cd);
-            color: #4e342e;
-        }
-
-        /* Header Title */
-        h1 {
-            text-align: center;
-            font-size: 1.8em;
-            font-weight: 700;
-            color: #4e342e;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 20px;
-        }
-
-        h1::after {
-            content: '';
-            display: block;
-            width: 80px;
-            height: 3px;
-            background-color: #a1887f;
-            margin: 10px auto 0;
-            border-radius: 5px;
-        }
-
-        /* Stats Cards */
-        .stats-container {
-            display: flex;
-            justify-content: center;
-            gap: 15px; /* Reduced gap between cards */
-            margin-bottom: 20px;
-        }
-
-        .stat-card {
-            background-color: #fff;
-            padding: 15px; /* Reduced padding */
-            border-radius: 8px; /* Slightly smaller corners */
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            width: 140px; /* Reduced width */
-        }
-
-        .stat-card h3 {
-            margin-bottom: 5px;
-            color: #6d4c41;
-            font-size: 0.9em; /* Slightly smaller text */
-        }
-
-        .stat-card p {
-            font-size: 1.5em; /* Smaller number size */
-            font-weight: bold;
-            color: #8d6e63;
-        }
-
-        /* Softer Suggest Button */
-        .suggest-link {
-            display: inline-block;
-            margin-bottom: 20px;
-            padding: 10px 20px;
-            background-color: #8d6e63;
-            color: #fff;
-            text-decoration: none;
-            border-radius: 5px;
-            font-weight: bold;
-            text-align: center;
-        }
-
-        .suggest-link:hover {
-            background-color: #6d4c41;
-        }
-
-        /* Filters and Search */
-        .filter-container {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .filter-container input, .filter-container select {
-            width: 220px;
-            padding: 10px;
-            margin: 5px;
-            border-radius: 5px;
-            border: 1px solid #bdbdbd;
-        }
-
-        /* Table Styling */
-        table {
-            width: 100%;
-            max-width: 900px;
-            margin: 20px auto;
-            border-collapse: collapse;
-            background-color: #f7f3ef; /* Soft cream background */
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
-            border-radius: 8px; /* Rounded corners */
-            overflow: hidden; /* Apply border-radius properly */
-        }
-
-        th, td {
-            padding: 12px;
-            border: 1px solid #d3b8a5; /* Subtle border */
-            text-align: center;
-        }
-
-        th {
-            background-color: #6d4c41; /* Rich coffee brown */
-            color: #fff; /* White text for contrast */
-            font-weight: bold;
-        }
-
-        tr:nth-child(even) {
-            background-color: #f0e6dd; /* Light alternating rows */
-        }
-
-        tr:hover {
-            background-color: #e8d8c3; /* Highlight on hover */
-        }
-
-    </style>
-</head>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{template :: head}"></head>
 <body>
+<div th:replace="~{template :: .nav-bar}"></div>
 
-<!-- Page Title -->
-<h1>☕ Uncover New Roasts. Compare Prices. Brew Boldly.</h1>
+<h1 th:text="${pageTitle}">☕ Uncover New Roasts. Compare Prices. Brew Boldly.</h1>
 
-<!-- Enhanced About Section on Main Page -->
-<div style="max-width: 700px; margin: 30px auto; background-color: #fffaf5; padding: 20px 30px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); text-align: center;">
-    <p style="font-size: 1.1em; color: #4e342e; line-height: 1.6;">
-        <strong style="color: #6d4c41; font-size: 1.2em;">BeanDive</strong> helps you discover and compare the coffee beans. Our data is updated <strong style="color: #8d6e63;">every night</strong> to ensure you get the latest prices.
-    </p>
-    <p style="font-size: 1.1em; color: #4e342e;">
-        Know a roastery we missed? <a href="https://forms.gle/L3zot9NFeVfw68v37" target="_blank" style="color: #6d4c41; text-decoration: none; font-weight: bold;">Suggest it here →</a>
-    </p>
+<div class="content" th:fragment="content">
+    <div style="max-width: 700px; margin: 30px auto; background-color: #fffaf5; padding: 20px 30px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); text-align: center;">
+        <p style="font-size: 1.1em; color: #4e342e;">
+            <strong style="color: #6d4c41; font-size: 1.2em;">BeanDive</strong> helps you discover and compare coffee beans. Our data is updated
+            <strong style="color: #8d6e63;">every night</strong> to ensure you get the latest prices.
+        </p>
+        <p>
+            Know a roastery we missed?
+            <a href="https://forms.gle/L3zot9NFeVfw68v37" target="_blank" style="color: #6d4c41; text-decoration: none; font-weight: bold;">Suggest it here →</a>
+        </p>
+    </div>
+
+    <!-- Filters Section -->
+    <div class="filter-container">
+        <input type="number" id="price-filter" placeholder="Filter by max price (₺)">
+        <input type="text" id="search-roastery" placeholder="Search by roastery">
+        <select id="sort-price">
+            <option value="none">Sort by Price</option>
+            <option value="asc">Lowest to Highest</option>
+            <option value="desc">Highest to Lowest</option>
+        </select>
+    </div>
+
+    <!-- Beans Table -->
+    <table>
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Roastery</th>
+            <th>Price (₺)</th>
+            <th>Link</th>
+        </tr>
+        </thead>
+        <tbody id="beans-table-body">
+        <tr><td colspan="4">Loading beans...</td></tr>
+        </tbody>
+    </table>
 </div>
 
-<!-- Stats Cards -->
-<div class="stats-container">
-    <div class="stat-card">
-        <h3>Lowest Price</h3>
-        <p id="min-price">₺0</p>
-    </div>
-    <div class="stat-card">
-        <h3>Average Price</h3>
-        <p id="avg-price">₺0</p>
-    </div>
-    <div class="stat-card">
-        <h3>Highest Price</h3>
-        <p id="max-price">₺0</p>
-    </div>
-</div>
+<style>
+    /* Improved stats card layout */
+    /* Filters styling */
+    .filter-container {
+        text-align: center;
+        margin-bottom: 20px;
+    }
 
-<!-- Filter & Search Inputs -->
-<div class="filter-container">
-    <input type="number" id="price-filter" placeholder="Filter by max price (₺)">
-    <input type="text" id="search-roastery" placeholder="Search by roastery">
-    <select id="sort-price">
-        <option value="none">Sort by Price</option>
-        <option value="asc">Lowest to Highest</option>
-        <option value="desc">Highest to Lowest</option>
-    </select>
-</div>
+    .filter-container input, .filter-container select {
+        width: 250px;
+        padding: 12px;
+        margin: 10px;
+        border-radius: 8px;
+        border: 1px solid #bdbdbd;
+    }
 
-<!-- Beans Table -->
-<table>
-    <thead>
-    <tr>
-        <th>Name</th>
-        <th>Roastery</th>
-        <th>Price (₺)</th>
-        <th>Link</th>
-    </tr>
-    </thead>
-    <tbody id="beans-table-body">
-    <tr><td colspan="4">Loading beans...</td></tr>
-    </tbody>
-</table>
+</style>
 
-<!-- JavaScript for Sorting and Filtering -->
 <script>
     $(document).ready(function () {
         let originalData = [];
@@ -200,18 +73,19 @@
             success: function (data) {
                 originalData = data;
                 if (data.length === 0) {
-                    $('#beans-table-body').html('<tr><td colspan="4">No beans available.</td></tr>');
+                    $('#beans-table-body').html('<tr><td colspan="4">No beans found.</td></tr>');
                 } else {
                     updateStats(data);
                     renderTable(data);
                 }
             },
             error: function () {
-                $('#beans-table-body').html('<tr><td colspan="4">Failed to load data. Please try again.</td></tr>');
+                $('#beans-table-body').html('<tr><td colspan="4">Failed to load data.</td></tr>');
             }
         });
 
         function updateStats(data) {
+            if (data.length === 0) return;
             const prices = data.map(bean => bean.price);
             $('#avg-price').text(`₺${(prices.reduce((a, b) => a + b, 0) / prices.length).toFixed(2)}`);
             $('#min-price').text(`₺${Math.min(...prices)}`);
@@ -221,11 +95,6 @@
         function renderTable(data) {
             const tableBody = $('#beans-table-body');
             tableBody.empty();
-
-            if (data.length === 0) {
-                tableBody.append('<tr><td colspan="4">No beans available at this price range.</td></tr>');
-                return;
-            }
 
             data.forEach(bean => {
                 tableBody.append(`
@@ -251,11 +120,8 @@
                 bean.roasteryName.toLowerCase().includes(searchQuery)
             );
 
-            if (sortOrder === 'asc') {
-                filteredData.sort((a, b) => a.price - b.price);
-            } else if (sortOrder === 'desc') {
-                filteredData.sort((a, b) => b.price - a.price);
-            }
+            if (sortOrder === 'asc') filteredData.sort((a, b) => a.price - b.price);
+            else if (sortOrder === 'desc') filteredData.sort((a, b) => b.price - a.price);
 
             renderTable(filteredData);
         });

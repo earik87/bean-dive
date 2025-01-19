@@ -1,6 +1,8 @@
 package com.ocean_roast.controllers;
 
 import com.ocean_roast.models.Bean;
+import com.ocean_roast.models.Roastery;
+import com.ocean_roast.services.RoasteryFactory;
 import com.ocean_roast.services.ScrapedDataCache;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +25,20 @@ public class BeansController {
 
     @GetMapping("/")
     public ModelAndView homePage() {
-        return new ModelAndView("beans");
+        ModelAndView modelAndView = new ModelAndView("beans");
+        modelAndView.addObject("pageTitle", "☕ Uncover New Roasts. Compare Prices. Brew Boldly.");
+        return modelAndView;
+    }
+
+    @GetMapping("/getRoasteries")
+    public List<Roastery> getRoasteries() {
+        return RoasteryFactory.getRoasteries();
+    }
+
+    @GetMapping("/roastery")
+    public ModelAndView roasteryPage() {
+        ModelAndView modelAndView = new ModelAndView("roasteries");
+        modelAndView.addObject("pageTitle", "☕ Discover Roasteries.");
+        return modelAndView;
     }
 }
