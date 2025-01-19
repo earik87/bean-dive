@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="~{template :: head}"></head>
+<body>
+
+<div th:replace="~{template :: .nav-bar}"></div>
+
+<h1 th:text="${pageTitle}">☕ Discover Roasteries</h1>
+
+<div class="content" th:fragment="content">
+
+    <!-- Filters Section -->
+    <div class="filter-container">
+        <input type="text" id="name-filter" placeholder="Search by name">
+        <input type="text" id="location-filter" placeholder="Search by location">
+    </div>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Location</th>
+            <th>Website</th>
+        </tr>
+        </thead>
+        <tbody id="roasteries-table-body">
+        <tr><td colspan="3">Loading roasteries...</td></tr>
+        </tbody>
+    </table>
+</div>
+
+<style>
+    .filter-container {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .filter-container input {
+        width: 250px;
+        padding: 12px;
+        margin: 10px;
+        border-radius: 8px;
+        border: 1px solid #bdbdbd;
+    }
+</style>
+
+<script>
+    $(document).ready(function () {
+        let originalData = [];
+
+        $.ajax({
+            url: "/getRoasteries",
+            method: "GET",
+            success: function (data) {
+                const tableBody = $('#roasteries-table-body');
+                tableBody.empty();
+
+                if (data.length === 0) {
+                    tableBody.html('<tr><td colspan="3">No roasteries found.</td></tr>');
+                    return;
+                }
+
+                // Sort the roasteries by location in ascending order
+                originalData = data.sort((a, b) => a.location.localeCompare(b.location));
+                renderTable(originalData);
+            },
+            error: function () {
+                $('#roasteries-table-body').html('<tr><td colspan="3">Failed to load data.</td></tr>');
+            }
+        });
+
+        function renderTable(data) {
+            const tableBody = $('#roasteries-table-body');
+            tableBody.empty();
+            data.forEach(roastery => {
+                tableBody.append(`
+                    <tr>
+                        <td>${roastery.name}</td>
+                        <td>${roastery.location}</td>
+                        <td><a href="${roastery.website}" target="_blank">Visit</a></td>
+                    </tr>
+                `);
+            });
+        }
+
+        // Filter roasteries by name and location
+        $('#name-filter, #location-filter').on('input', function () {
+            const nameQuery = $('#name-filter').val().toLowerCase();
+            const locationQuery = $('#location-filter').val().toLowerCase();
+
+            const filteredData = originalData.filter(roastery =>
+                roastery.name.toLowerCase().includes(nameQuery) &&
+                roastery.location.toLowerCase().includes(locationQuery)
+            );
+
+            renderTable(filteredData);
+        });
+    });
+</script>
+
+</body>
+</html>
