@@ -200,7 +200,7 @@
             success: function (data) {
                 originalData = data;
                 if (data.length === 0) {
-                    $('#beans-table-body').html('<tr><td colspan="4">No beans available.</td></tr>');
+                    $('#beans-table-body').html('<tr><td colspan="4">We are still gathering data. Please refresh the page to try again.</td></tr>');
                 } else {
                     updateStats(data);
                     renderTable(data);
@@ -212,6 +212,8 @@
         });
 
         function updateStats(data) {
+            if (data.length === 0) return;
+
             const prices = data.map(bean => bean.price);
             $('#avg-price').text(`₺${(prices.reduce((a, b) => a + b, 0) / prices.length).toFixed(2)}`);
             $('#min-price').text(`₺${Math.min(...prices)}`);
@@ -221,11 +223,6 @@
         function renderTable(data) {
             const tableBody = $('#beans-table-body');
             tableBody.empty();
-
-            if (data.length === 0) {
-                tableBody.append('<tr><td colspan="4">No beans available at this price range.</td></tr>');
-                return;
-            }
 
             data.forEach(bean => {
                 tableBody.append(`
