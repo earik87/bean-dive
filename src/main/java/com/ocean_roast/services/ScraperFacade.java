@@ -61,7 +61,7 @@ public class ScraperFacade {
             }
         }
 
-        List<String> excludedWords = List.of("kitap", "Aboneliği");
+        List<String> excludedWords = List.of("kitap", "Aboneliği", "kağıdı", "Nespresso");
 
         return beans.stream()
                 .filter(bean -> bean.getPrice() >= 100)  // Filter out beans with price < 100
