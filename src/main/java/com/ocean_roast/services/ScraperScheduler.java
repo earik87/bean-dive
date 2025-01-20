@@ -22,7 +22,7 @@ public class ScraperScheduler {
     // Runs once, 2 seconds after startup
     @Scheduled(initialDelay = 2000, fixedDelay = Long.MAX_VALUE)
     public void initialScrape() {
-        log.info("Running initial data scrape 10 seconds after startup.");
+        log.info("Running initial data scrape after startup.");
         scrapeData();
     }
 
@@ -36,7 +36,6 @@ public class ScraperScheduler {
     // 🕒 Runs every day at 2:00 AM
     public void scrapeData() {
         log.info("Scheduled data scraper started...");
-        String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss"));
 
         // Scrape data
         List<Bean> scrapedData = scraperFacade.fetchBeanPrices(RoasteryFactory.getRoasteries());
