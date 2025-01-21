@@ -20,8 +20,10 @@
 
     <!-- Filters Section -->
     <div class="filter-container">
-        <input type="number" id="price-filter" placeholder="Filter by max price (₺)">
+        <input type="number" id="min-price-filter" placeholder="Filter by min price (₺)">
+        <input type="number" id="max-price-filter" placeholder="Filter by max price (₺)">
         <input type="text" id="search-roastery" placeholder="Search by roastery">
+        <input type="text" id="search-bean-name" placeholder="Search by bean name">
         <select id="sort-price">
             <option value="none">Sort by Price</option>
             <option value="asc">Lowest to Highest</option>
@@ -108,25 +110,33 @@
             });
         }
 
-        $('#price-filter, #search-roastery, #sort-price').on('input change', function () {
+        $('#min-price-filter, #max-price-filter, #search-roastery, #search-bean-name, #sort-price').on('input change', function () {
             let filteredData = originalData;
 
-            const maxPrice = parseFloat($('#price-filter').val()) || Infinity;
-            const searchQuery = $('#search-roastery').val().toLowerCase();
+            const minPrice = parseFloat($('#min-price-filter').val()) || 0;
+            const maxPrice = parseFloat($('#max-price-filter').val()) || Infinity;
+            const roasteryQuery = $('#search-roastery').val().toLowerCase();
+            const beanNameQuery = $('#search-bean-name').val().toLowerCase();
             const sortOrder = $('#sort-price').val();
 
             filteredData = filteredData.filter(bean =>
+                bean.price >= minPrice &&
                 bean.price <= maxPrice &&
-                bean.roasteryName.toLowerCase().includes(searchQuery)
+                (bean.roasteryName ? bean.roasteryName.toLowerCase().includes(roasteryQuery) : false) &&
+                (bean.name ? bean.name.toLowerCase().includes(beanNameQuery) : false)
             );
 
-            if (sortOrder === 'asc') filteredData.sort((a, b) => a.price - b.price);
-            else if (sortOrder === 'desc') filteredData.sort((a, b) => b.price - a.price);
+            if (sortOrder === 'asc') {
+                filteredData.sort((a, b) => a.price - b.price);
+            } else if (sortOrder === 'desc') {
+                filteredData.sort((a, b) => b.price - a.price);
+            }
 
             renderTable(filteredData);
         });
-    });
-</script>
 
+    });
+
+</script>
 </body>
 </html>
