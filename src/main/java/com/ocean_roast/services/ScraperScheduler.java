@@ -23,10 +23,15 @@ public class ScraperScheduler {
     private final BeanPriceDataService beanPriceDataService;
 
     @PostConstruct
-    public void initializeCache() {
+    public void init() {
         List<Bean> savedData = beanPriceDataService.loadData();
-        scrapedDataCache.updateCache(savedData);
-        log.info("Cache initialized with {} beans from saved data.", savedData.size());
+        if (!savedData.isEmpty()) {
+            scrapedDataCache.updateCache(savedData);
+            log.info("Loaded {} beans from persistent file", savedData.size());
+        } else {
+            log.info("No saved data found, will perform initial scrape");
+            scrapeData();
+        }
     }
 
     @Scheduled(cron = "0 0 2 * * *")
@@ -42,6 +47,6 @@ public class ScraperScheduler {
 
         scrapedDataCache.updateCache(scrapedData);
         beanPriceDataService.saveData(scrapedData);
-        log.info("Cache and persistent storage updated with latest scraped data.");
+        log.info("Cache and persisten file are updated with latest scraped data.");
     }
 }

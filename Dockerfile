@@ -19,11 +19,11 @@ WORKDIR /app
 # Copy the built JAR
 COPY --from=builder /app/target/ocean-roast-0.0.1-SNAPSHOT.jar app.jar
 
+# Create a directory for persistent data
+RUN mkdir -p /app/data
+
 EXPOSE 8080
 
 ENTRYPOINT ["java", "-Xms128m", "-Xmx256m", "-jar", "/app/app.jar"]
-
-# Create a volume for persistent data
-VOLUME /app/data
 
 CMD ["--spring.profiles.active=prod"]
