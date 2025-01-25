@@ -1,4 +1,4 @@
-package com.ocean_roast.services;
+package com.ocean_roast.services.scraperstrategies;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;

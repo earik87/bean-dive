@@ -2,6 +2,7 @@ package com.ocean_roast.services;
 
 import com.ocean_roast.models.Bean;
 import com.ocean_roast.models.Roastery;
+import com.ocean_roast.services.scraperstrategies.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;

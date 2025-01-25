@@ -23,4 +23,7 @@ EXPOSE 8080
 
 ENTRYPOINT ["java", "-Xms128m", "-Xmx256m", "-jar", "/app/app.jar"]
 
+# Create a volume for persistent data
+VOLUME /app/data
+
 CMD ["--spring.profiles.active=prod"]
