@@ -42,7 +42,12 @@
         </tr>
         </thead>
         <tbody id="beans-table-body">
-        <tr><td colspan="4">Loading beans...</td></tr>
+        <tr th:each="bean : ${beans}">
+            <td th:text="${bean.name}"></td>
+            <td th:text="${bean.roasteryName}"></td>
+            <td th:text="'₺' + ${bean.price}"></td>
+            <td><a th:href="${bean.link}" target="_blank">View</a></td>
+        </tr>
         </tbody>
     </table>
 </div>
@@ -62,29 +67,11 @@
         border-radius: 8px;
         border: 1px solid #bdbdbd;
     }
-
 </style>
 
-<script>
+<script th:inline="javascript">
     $(document).ready(function () {
-        let originalData = [];
-
-        $.ajax({
-            url: "/beans",
-            method: "GET",
-            success: function (data) {
-                originalData = data;
-                if (data.length === 0) {
-                    $('#beans-table-body').html('<tr><td colspan="4">We are gathering data, please refresh the page to try again.</td></tr>');
-                } else {
-                    updateStats(data);
-                    renderTable(data);
-                }
-            },
-            error: function () {
-                $('#beans-table-body').html('<tr><td colspan="4">Failed to load data.</td></tr>');
-            }
-        });
+        let originalData = /*[[${beans}]]*/ [];
 
         function updateStats(data) {
             if (data.length === 0) return;
@@ -110,6 +97,9 @@
             });
         }
 
+        // Initial stats update
+        updateStats(originalData);
+
         $('#min-price-filter, #max-price-filter, #search-roastery, #search-bean-name, #sort-price').on('input change', function () {
             let filteredData = originalData;
 
@@ -133,10 +123,9 @@
             }
 
             renderTable(filteredData);
+            updateStats(filteredData);
         });
-
     });
-
 </script>
 </body>
 </html>

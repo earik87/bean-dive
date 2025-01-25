@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{template :: head}"></head>
 <body>
 
@@ -24,7 +24,11 @@
         </tr>
         </thead>
         <tbody id="roasteries-table-body">
-        <tr><td colspan="3">Loading roasteries...</td></tr>
+        <tr th:each="roastery : ${roasteries}">
+            <td th:text="${roastery.name}"></td>
+            <td th:text="${roastery.location}"></td>
+            <td><a th:href="${roastery.website}" target="_blank">Visit</a></td>
+        </tr>
         </tbody>
     </table>
 </div>
@@ -44,30 +48,13 @@
     }
 </style>
 
-<script>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    const roasteries = /*[[${roasteries}]]*/ [];
+    /*]]>*/
+
     $(document).ready(function () {
-        let originalData = [];
-
-        $.ajax({
-            url: "/getRoasteries",
-            method: "GET",
-            success: function (data) {
-                const tableBody = $('#roasteries-table-body');
-                tableBody.empty();
-
-                if (data.length === 0) {
-                    tableBody.html('<tr><td colspan="3">No roasteries found.</td></tr>');
-                    return;
-                }
-
-                // Sort the roasteries by location in ascending order
-                originalData = data.sort((a, b) => a.location.localeCompare(b.location));
-                renderTable(originalData);
-            },
-            error: function () {
-                $('#roasteries-table-body').html('<tr><td colspan="3">Failed to load data.</td></tr>');
-            }
-        });
+        const originalData = roasteries.sort((a, b) => a.location.localeCompare(b.location));
 
         function renderTable(data) {
             const tableBody = $('#roasteries-table-body');
@@ -95,6 +82,9 @@
 
             renderTable(filteredData);
         });
+
+        // Initial render
+        renderTable(originalData);
     });
 </script>
 
