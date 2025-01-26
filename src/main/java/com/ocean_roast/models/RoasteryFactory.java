@@ -1,9 +1,12 @@
 package com.ocean_roast.models;
 
 
+import org.springframework.stereotype.Component;
+
 import java.util.Arrays;
 import java.util.List;
 
+@Component
 public class RoasteryFactory {
     public static final List<Roastery> ROASTERIES = Arrays.asList(
             new Roastery("Tin Coffee",

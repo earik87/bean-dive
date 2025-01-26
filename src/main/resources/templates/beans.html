@@ -7,6 +7,19 @@
 <h1 th:text="${pageTitle}">☕ Uncover New Roasts. Compare Prices. Brew Boldly.</h1>
 
 <div class="content" th:fragment="content">
+    <!-- Analytics info -->
+    <div class="analytics-info">
+        <div class="analytics-box">
+            <span class="analytics-number" th:text="${successfulRoasteries}"></span>
+            <span class="analytics-label">Roasteries Scraped</span>
+            <span class="analytics-subtext" th:text="'out of ' + ${totalRoasteries} + ' attempted'"></span>
+        </div>
+        <div class="analytics-box">
+            <span class="analytics-number" th:text="${beanCount}"></span>
+            <span class="analytics-label">Bean Prices Fetched</span>
+        </div>
+    </div>
+
     <div style="max-width: 700px; margin: 30px auto; background-color: #fffaf5; padding: 20px 30px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); text-align: center;">
         <p style="font-size: 1.1em; color: #4e342e;">
             <strong style="color: #6d4c41; font-size: 1.2em;">BeanDive</strong> helps you discover and compare coffee beans. Our data is updated
@@ -66,6 +79,45 @@
         margin: 10px;
         border-radius: 8px;
         border: 1px solid #bdbdbd;
+    }
+
+    /* Updated styles for analytics info */
+    .analytics-info {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 20px;
+        margin-bottom: 30px;
+    }
+
+    .analytics-box {
+        background-color: #f0f0f0;
+        padding: 15px;
+        border-radius: 8px;
+        text-align: center;
+        min-width: 150px; /* Increased to accommodate longer text */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .analytics-number {
+        display: block;
+        font-size: 28px; /* Slightly increased for emphasis */
+        font-weight: bold;
+        color: #6d4c41;
+        margin-bottom: 5px;
+    }
+
+    .analytics-label {
+        font-size: 16px;
+        color: #8d6e63;
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    .analytics-subtext {
+        font-size: 12px;
+        color: #a1887f;
+        display: block;
     }
 </style>
 
