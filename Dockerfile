@@ -14,6 +14,8 @@ RUN mvn clean package -DskipTests
 # Runtime Stage - Amazon Corretto 21
 FROM amazoncorretto:21-alpine
 
+WORKDIR /app
+
 # Copy the built JAR
 COPY --from=builder /app/target/ocean-roast-0.0.1-SNAPSHOT.jar app.jar
 
