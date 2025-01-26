@@ -2,51 +2,49 @@ package com.ocean_roast.services;
 
 import com.ocean_roast.models.Bean;
 import com.ocean_roast.models.RoasteryFactory;
-import com.ocean_roast.services.scrapedDataService.BeanPriceDataService;
-import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
-@Slf4j
+@Component
 @RequiredArgsConstructor
-@Service
-@ConditionalOnProperty(name = "scheduler.enabled", havingValue = "true", matchIfMissing = true)
+@Slf4j
 public class ScraperScheduler {
 
     private final ScraperFacade scraperFacade;
     private final ScrapedDataCache scrapedDataCache;
-    private final BeanPriceDataService beanPriceDataService;
 
-    @PostConstruct
     public void init() {
-        List<Bean> savedData = beanPriceDataService.loadData();
-        if (!savedData.isEmpty()) {
-            scrapedDataCache.updateCache(savedData);
-            log.info("Loaded {} beans from persistent file", savedData.size());
-        } else {
-            log.info("No saved data found, will perform initial scrape");
+        if (scrapedDataCache.isEmpty()) {
+            log.info("Cache is empty, performing initial scrape");
             scrapeData();
+        } else {
+            log.info("Cache contains {} beans", scrapedDataCache.getData().size());
         }
     }
 
     @Scheduled(cron = "0 0 2 * * *")
+    @SuppressWarnings("unused")
     public void scheduledScrape() {
-        log.info("Running scheduled data scrape at 2 AM.");
+        log.info("Starting scheduled data scrape at {}", LocalDateTime.now());
+        long startTime = System.currentTimeMillis();
+        
         scrapeData();
+        
+        long endTime = System.currentTimeMillis();
+        log.info("Completed scheduled data scrape. Duration: {} ms", endTime - startTime);
     }
 
     public void scrapeData() {
-        log.info("Scheduled data scraper started...");
+        log.info("Data scraper started...");
 
         List<Bean> scrapedData = scraperFacade.fetchBeanPrices(RoasteryFactory.getRoasteries());
 
         scrapedDataCache.updateCache(scrapedData);
-        beanPriceDataService.saveData(scrapedData);
-        log.info("Cache and persisten file are updated with latest scraped data.");
+        log.info("Cache updated with {} beans", scrapedData.size());
     }
 }
