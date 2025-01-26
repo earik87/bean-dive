@@ -17,7 +17,7 @@ public class BeansController {
     public ModelAndView homePage() {
         ModelAndView modelAndView = new ModelAndView("beans");
         modelAndView.addObject("pageTitle", "☕ Uncover New Roasts. Compare Prices. Brew Boldly.");
-        modelAndView.addObject("beans", scrapedDataCache.getCachedBeans());
+        modelAndView.addObject("beans", scrapedDataCache.getData());
         return modelAndView;
     }
 }

@@ -3,21 +3,23 @@ package com.ocean_roast.services;
 import com.ocean_roast.models.Bean;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 @Component
 public class ScrapedDataCache {
-    private final AtomicReference<List<Bean>> cachedBeans = new AtomicReference<>();
+    private final AtomicReference<List<Bean>> cache = new AtomicReference<>(new ArrayList<>());
 
-    // Update the cache with fresh data
-    public void updateCache(List<Bean> beans) {
-        cachedBeans.set(beans);
-        System.out.println("Cache updated with " + beans.size() + " items.");
+    public List<Bean> getData() {
+        return new ArrayList<>(cache.get());
     }
 
-    // Retrieve cached data
-    public List<Bean> getCachedBeans() {
-        return cachedBeans.get();
+    public void updateCache(List<Bean> newData) {
+        cache.set(new ArrayList<>(newData));
+    }
+
+    public boolean isEmpty() {
+        return cache.get().isEmpty();
     }
 }

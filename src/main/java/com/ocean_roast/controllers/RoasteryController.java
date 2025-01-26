@@ -1,7 +1,7 @@
 package com.ocean_roast.controllers;
 
 import com.ocean_roast.models.Roastery;
-import com.ocean_roast.services.RoasteryFactory;
+import com.ocean_roast.models.RoasteryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

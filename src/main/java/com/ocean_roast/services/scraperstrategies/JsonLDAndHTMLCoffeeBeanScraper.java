@@ -1,24 +1,26 @@
-package com.ocean_roast.services;
+package com.ocean_roast.services.scraperstrategies;
 
 import com.ocean_roast.models.Bean;
 import com.ocean_roast.models.Roastery;
 import com.ocean_roast.utils.PriceParser;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class JsonLDAndHTMLCoffeeBeanScraper implements CoffeeBeanScraperInterface{
 
+    @SneakyThrows
     @Override
     public List<Bean> fetchBeanPrices(Roastery roastery) {
         List<Bean> beans = new ArrayList<>();
@@ -46,8 +48,9 @@ public class JsonLDAndHTMLCoffeeBeanScraper implements CoffeeBeanScraperInterfac
                 }
             }
 
-        } catch (IOException | ParseException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            throw e;
         }
 
         return beans;
