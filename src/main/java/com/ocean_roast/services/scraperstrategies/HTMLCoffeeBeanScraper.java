@@ -4,6 +4,7 @@ import com.ocean_roast.models.Bean;
 import com.ocean_roast.models.Roastery;
 import com.ocean_roast.utils.PriceParser;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -11,8 +12,6 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +20,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class HTMLCoffeeBeanScraper implements CoffeeBeanScraperInterface {
 
+    @SneakyThrows
     @Override
     public List<Bean> fetchBeanPrices(Roastery roastery) {
         List<Bean> beans = new ArrayList<>();
@@ -34,10 +34,9 @@ public class HTMLCoffeeBeanScraper implements CoffeeBeanScraperInterface {
 
                 beans.add(new Bean(roastery.getName(), name, price, roastery.getWebsite()));
             }
-        } catch (IOException e) {
-            log.error("Error fetching data: {}", e.getMessage());
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            throw e;
         }
         return beans;
     }

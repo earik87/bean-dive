@@ -18,7 +18,8 @@ public class ScraperScheduler {
     private final ScraperFacade scraperFacade;
     private final ScrapedDataCache scrapedDataCache;
 
-    public void init() {
+    @Scheduled(initialDelay = 2000, fixedDelay = Long.MAX_VALUE)
+    public void initialScrape() {
         if (scrapedDataCache.isEmpty()) {
             log.info("Cache is empty, performing initial scrape");
             scrapeData();

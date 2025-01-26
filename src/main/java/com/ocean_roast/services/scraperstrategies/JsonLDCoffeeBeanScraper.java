@@ -5,18 +5,20 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ocean_roast.models.Bean;
 import com.ocean_roast.models.Roastery;
 import com.ocean_roast.utils.PriceParser;
+import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
 @Component
+@Slf4j
 public class JsonLDCoffeeBeanScraper implements CoffeeBeanScraperInterface{
+    @SneakyThrows
     @Override
     public List<Bean> fetchBeanPrices(Roastery roastery) {
         List<Bean> beans = new ArrayList<>();
@@ -47,11 +49,9 @@ public class JsonLDCoffeeBeanScraper implements CoffeeBeanScraperInterface{
                     }
                 }
             }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            throw e;
         }
 
         return beans;

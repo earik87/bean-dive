@@ -3,6 +3,7 @@ package com.ocean_roast.services.scraperstrategies;
 import com.ocean_roast.models.Bean;
 import com.ocean_roast.models.Roastery;
 import com.ocean_roast.utils.PriceParser;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -17,6 +18,7 @@ import java.util.List;
 @Component
 public class ProductCardCoffeeBeanScraper implements CoffeeBeanScraperInterface {
 
+    @SneakyThrows
     @Override
     public List<Bean> fetchBeanPrices(Roastery roastery) {
         List<Bean> beans = new ArrayList<>();
@@ -45,7 +47,8 @@ public class ProductCardCoffeeBeanScraper implements CoffeeBeanScraperInterface 
                 }
             }
         } catch (Exception e) {
-            log.info(e.getMessage());
+            log.error(e.getMessage());
+            throw e;
         }
 
         return beans;
