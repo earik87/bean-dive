@@ -1,4 +1,4 @@
-# ocean-roast
+# bean-dive
 Curated list of coffee roasters and coffee bean prices in Turkiye. It is live in here -> https://www.beandive.com/
 
 ## Tech Stack
