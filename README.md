@@ -6,8 +6,12 @@ Backend
 - Java 21
 - Spring Boot 3.4.1
 - Docker
+
 Frontend
 - Thymeleaf
+
+Cloud provider
+- Render
 
 ## Running
 
